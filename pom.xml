@@ -1,9 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<!-- I will need to show this whole file in my video right after whowing my DB schema and user I also need to look at project explorer
+After all that I need to go to my exception class and look at that-->
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.promineotech</groupId>
 	<artifactId>Week-07-Intro_to_MySQL</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	
+	<!-- Adds the java version to the properties of the project -->
 	<properties>
 		<java.version>11</java.version>
 	</properties>
