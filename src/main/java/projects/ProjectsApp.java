@@ -16,12 +16,16 @@ import java.util.ArrayList;
 public class ProjectsApp {
 	
 	private Scanner in = new Scanner(System.in);
+	
 	//	@formatter: off
 	private List<String> operations = List.of(
 		"1) Add a project",
-		"2) List of projects"
+		"2) List of projects",
+		"3) Select a project"
 	);
 	//	@formatter: on
+	
+	Project curProject = null;
 	
 	private ProjectService projectService = new ProjectService();
 	
@@ -48,6 +52,7 @@ public class ProjectsApp {
 				printOperation();
 				int selection = getUserSelection();
 				
+				
 				switch (selection) {
 				
 				case -1:
@@ -66,7 +71,7 @@ public class ProjectsApp {
 					break;
 					
 				case 3:
-					
+					selectProject();
 					
 				}
 				
@@ -77,6 +82,19 @@ public class ProjectsApp {
 		}
 	}
 	
+	private void selectProject() {
+		// TODO Auto-generated method stub
+		listProject();
+		
+		Integer projectId = getIntInput("Enter a project ID to select a project");
+		
+		
+		curProject = projectService.fetchProjectById(projectId);
+		
+		if(Objects.isNull(curProject)) {
+			System.out.println("\nInvalid project ID selected");
+		}
+	}
 	private void createProject() {
 		// TODO Auto-generated method stub
 		String projectName = getStringInput("Enter the project name");
@@ -118,7 +136,13 @@ public class ProjectsApp {
 	}
 	private void listProject() {
 		// TODO Auto-generated method stub
-		List<Project> projects = new ArrayList<Project>(projectService.fetchAllProjects());
+		List<Project> projects = projectService.fetchAllProjects();
+		
+		projects.forEach(project -> System.out.println("Project Name: " + project.getProjectName() +
+				"\nProject ID: " + project.getProjectId() + "\nDifficulty: " + project.getDifficulty() +
+				"\nEstimated Hours: " + project.getEstimatedHours() + "\nActual Hours: " + project.getActualHours() +
+				"\nNotes: " + project.getNotes() + "\n"
+				));
 	}
 	private boolean exitMenue() {
 		// TODO Auto-generated method stub
@@ -161,6 +185,11 @@ public class ProjectsApp {
 		// TODO Auto-generated method stub
 		System.out.println("\nThese are the available selections. Press the Enter key to quit: ");
 		operations.forEach(line -> System.out.println(" " + line));
+		if(Objects.isNull(curProject)) {
+			System.out.println("\nYou are not working with a project");
+		} else {
+			System.out.println("\nYou are working with project: " + curProject);
+		}
 	}
 
 }
