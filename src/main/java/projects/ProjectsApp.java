@@ -21,7 +21,9 @@ public class ProjectsApp {
 	private List<String> operations = List.of(
 		"1) Add a project",
 		"2) List of projects",
-		"3) Select a project"
+		"3) Select a project",
+		"4) Update project details",
+		"5) Delete a project"
 	);
 	//	@formatter: on
 	
@@ -72,8 +74,17 @@ public class ProjectsApp {
 					
 				case 3:
 					selectProject();
+					break;
+					
+				case 4:
+					updateProjectDetails();
+					break;
+					
+				case 5:
+					deleteProject();
 					
 				}
+				
 				
 
 			} catch (Exception e) {
@@ -82,6 +93,43 @@ public class ProjectsApp {
 		}
 	}
 	
+	private void deleteProject() {
+		listProject();
+		
+		Integer projectId = getIntInput("Enter the ID of the project to be deleted");
+		
+		projectService.deleteProject(projectId); 
+			
+		System.out.println("Project with the project Id of " + projectId + " has been deleted");
+		
+		
+	}
+	
+	private void updateProjectDetails() {
+		if(Objects.isNull(curProject)) {
+			System.out.println("\nPlease select a project");
+			return;
+		}
+		
+		String projectName = getStringInput("Enter the project name [" + curProject.getProjectName() + "]");
+		BigDecimal estimatedHours = getDecimalInput("Enter the estimated hours [" + curProject.getEstimatedHours() + "]");
+		BigDecimal actualHours = getDecimalInput("Enter the actual hours [" + curProject.getActualHours() + "]");
+		Integer diffuculty = getIntInput("Enter the project diffuculy (1 - 5) [" + curProject.getDifficulty() + "]");
+		String notes = getStringInput("Enter the project notes [" + curProject.getNotes() + "]"); 
+		
+		Project project = new Project();
+		
+		project.setProjectId(curProject.getProjectId());
+		project.setProjectName(Objects.isNull(projectName) ? curProject.getProjectName() : projectName);
+		project.setEstimatedHours(Objects.isNull(projectName) ? curProject.getEstimatedHours() : estimatedHours);
+		project.setActualHours(Objects.isNull(projectName) ? curProject.getActualHours() : actualHours);
+		project.setDifficulty(Objects.isNull(projectName) ? curProject.getDifficulty() : diffuculty);
+		project.setNotes(Objects.isNull(projectName) ? curProject.getNotes() : notes);
+	
+		projectService.modifyProjectDetails(project);
+		
+		curProject = projectService.fetchProjectById(curProject.getProjectId());
+	}
 	private void selectProject() {
 		// TODO Auto-generated method stub
 		listProject();
